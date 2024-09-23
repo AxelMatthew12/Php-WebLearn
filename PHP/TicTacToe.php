@@ -1,0 +1,114 @@
+<?php
+//    Game kondisi ending
+
+$bHasWinner = false;
+$bIsTied = false;
+$cWinner = '';
+$casSquare = array('','','','','','','','','');
+
+// new knowledge "_post" <<< learn that xelll >>>
+if (isset($_POST["SubmitButton"])) {
+    for($i = 0 ; $i < 9; ++$i){
+        $caSquare[$i] = $_POST["Square".$i];
+    }
+
+    $iaaWins = array(array(1,0,3,6, array(2,2), array(3,0,1,2), array(4,0)));
+    // cek status menang
+
+    for($i = 0; $i < 4; $i++){
+        $iDiff = $iaaWins[$i][0];
+        $iLength = count($iaaWins[$i]);
+        for($j = 1; $j < $iLength; $j++){
+            $iStart = $iaaWins[$i][$j];
+            if($caSquare[$iStart] !='') {
+                if(($caSquare [$iStart] == $caSquare[$iStart + $iDiff]) &&
+                ($caSquare[$iStart] == $caSquare[$iStart + 2*$iDiff])) {
+                    $bHasWinner = true;
+                    $cWinner = $caSquare[$iStart];
+                }  
+
+            }
+        }
+    }
+
+    if  (!$bHasWinner) {
+        $bTieCheck = true;
+        for($i = 0; $i < 9; $i++){
+            if($caSquare[$i] == '') {
+                $bTieCheck = false;
+            }
+        }
+        $bIsTied = $bTieCheck;
+        if($bIsTied){
+            printf('<div id="idMessage">%s</div>', "Tie game! ");
+        }else {
+            printf('<div id ="idMessage">%s</div>', "Tic Tac Toe");
+        }
+    }else {
+        printf('<div id="idMessage">%s Wins!</div>',$cWinner);
+    }
+}else {
+    printf('<div id ="idMessage">%s</div>', "Tic Tac Toe");
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+    <style type="text/css">
+        #idMessage {
+           color: aqua;
+           background-color: #444444;
+           width: 300px;
+           font-size: 40px;
+           font-family: arial;
+           text-align: center;
+        }
+
+        #idSquare {
+            background-color: #CCCCCC;
+            border: 2px solid #444444;
+            color: #000000;
+            width: 100px;
+            height: 100px;
+            font-size: 66px;
+            font-family: arial;
+            text-align: center;
+        }
+
+        #idButton {
+            background-color: #EEEEEE;
+            border: 4px outset #CCCCCC;
+            width: 300px;
+            font-size: 40px;
+            font-family: arial;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form name="TicTacToe" method="post"
+    action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+
+<?php
+    for ($i = 0; $i <= 8; $i++){
+        $sSquare = '<input type="text" name="Square%s" value="%s" id="idSquare">';
+        printf($sSquare, $i, $casSquare[$i]);
+
+        if($i == 2 || $i == 5 || $i == 8){
+            printf('<br />');
+        }
+    }
+    if ($bHasWinner || $bIsTied) {
+        $sThisFile = htmlspecialchars($_SERVER["PHP_SELF"]);
+        printf('<input type="button" name="newgame" value="New Game"
+        onclick="window.location.href=\''.$sThisFile.'\'" id="idButton">');
+    } else {
+        printf('<input type="submit" name="SubmitButton" value="Move" id="idButton">');
+    }
+    ?>
+</form>
+    
+</body>
+</html>
