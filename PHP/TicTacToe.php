@@ -12,19 +12,29 @@ if (isset($_POST["SubmitButton"])) {
         $caSquare[$i] = $_POST["Square".$i];
     }
 
-    $iaaWins = array(array(1,0,3,6, array(2,2), array(3,0,1,2), array(4,0)));
+    $iaaWins = array(
+        array(0,1,2),
+        array(3,4,5),
+        array(6,7,8),
+        array(0,3,6),
+        array(1,4,7),
+        array(2,5,8),
+        array(0,4,8),
+        array(2,4,6)
+    );
     // cek status menang
-
+    // tadi di perbaiki di penamaan $casSquare nya typo
+    // perulangan masih murni tanpa gpt
     for($i = 0; $i < 4; $i++){
         $iDiff = $iaaWins[$i][0];
         $iLength = count($iaaWins[$i]);
         for($j = 1; $j < $iLength; $j++){
             $iStart = $iaaWins[$i][$j];
-            if($caSquare[$iStart] !='') {
-                if(($caSquare [$iStart] == $caSquare[$iStart + $iDiff]) &&
-                ($caSquare[$iStart] == $caSquare[$iStart + 2*$iDiff])) {
+        if($casSquare[$iStart] !='') {
+                if(($casSquare [$iStart] == $casSquare[$iStart + $iDiff]) &&
+                ($casSquare[$iStart] == $casSquare[$iStart + 2*$iDiff])) {
                     $bHasWinner = true;
-                    $cWinner = $caSquare[$iStart];
+                    $cWinner = $casSquare[$iStart];
                 }  
 
             }
